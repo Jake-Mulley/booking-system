@@ -49,7 +49,7 @@ try:
 
                     else:
                         try:
-                            connection = db.connect('localhost', 'jm72', 'phoht', 'cs6503_cs1106_jm72')
+                            connection = db.connect('localhost', '', '', '')
                             cursor = connection.cursor(db.cursors.DictCursor)
                             cursor.execute("""SELECT * FROM bookings 
                                               WHERE TableID = %s AND BookingTime = %s""", (table, time))
