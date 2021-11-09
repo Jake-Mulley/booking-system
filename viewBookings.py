@@ -51,12 +51,7 @@ try:
                 cursor.close()
                 connection.close()
                 result = """
-                    <nav>
-                            <a href=""></a>
-                            <a href=""> </a>
-                            <a href="viewAllBookings.py">View All Bookings</a>
-                            <a href="logout.py">Log Out </a>
-                    </nav>
+
                     <main>
                             <h1>Cancel Booking</h1>
                             <form action="cancelBooking.py" method="post">
@@ -84,7 +79,14 @@ print("""
             <header>
                 <h1>Reservation System</h1>
             </header>
-
+            <nav>
+                <a href=""></a>
+                <a href=""> </a>
+                <a href="viewAllBookings.py">View All Bookings</a>
+                <a href="modifyAccount.py">Modify Account</a>
+                <a href="book.py">Make Booking For Self</a>
+                <a href="logout.py">Log Out </a>
+            </nav>
             %s
             <aside></aside>
             <footer>
