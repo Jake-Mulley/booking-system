@@ -17,8 +17,7 @@ print()
 
 result = """
     <main>
-        <h1>Please log in or register to make a booking.</h1>
-       <p>You do not have permission to access this page.</p>
+        
        <ul>
            <li><a href="register.py">Register</a></li>
            <li><a href="login.py">Login</a></li>
@@ -60,9 +59,10 @@ try:
 
                                 cursor.execute("""INSERT INTO bookings (Person, BookingTime, TableID)
                                                   VALUES (%s, %s, %s)""", (username, time, table))
-                                connection.commit()
-                                cursor.close()
-                                connection.close()
+                                result = 'booking successful'#'<p>Booking at table %s at %s was successful</p>' % (table, time)
+                            connection.commit()
+                            cursor.close()
+                            connection.close()
 
                         except (db.Error, IOError):
                             # nts, improve output here
@@ -85,7 +85,7 @@ print("""
             </header>
             <main>
                 <h1>Register:</h1>
-                <form action="test.py" method="post">
+                <form action="book.py" method="post">
                     <label for="table">Table Number: </label>
                     <input type="text" name="table" id="table" value="%s" />
                     <label for="time">Time (format: YYYY-MM-DD hh:mm:ss): </label>
@@ -94,7 +94,8 @@ print("""
                     <input type="submit" value="Book" />
                 </form>
                 <p>Use the above boxes to enter a valid table number and the time with which you wish to book</p>
-                <p><a href="login.py"> Log in</a></p>
+                <p><a href="viewBookings.py">View Bookings </a></p>
+                <p><a href="logout.py"> Log Out</a></p>
 
                 %s
             </main>
