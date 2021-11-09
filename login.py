@@ -1,5 +1,7 @@
 #!/usr/local/bin/python3
 
+#!/usr/local/bin/python3
+
 from cgitb import enable
 
 enable()
@@ -45,6 +47,7 @@ if len(form_data) != 0:
                        <li><a href="viewBookings.py">View Own Bookings</a></li> 
                        <li><a href="viewAllBookings.py">View All Bookings</a></li>
                        <li><a href="book.py">Make Booking For Self</a></li>
+                       <li><a href="modifyAccount.py">Modify Account</a></li>
                        <li><a href="logout.py">Log out</a></li>
                    </ul>"""
                 print(cookie)
