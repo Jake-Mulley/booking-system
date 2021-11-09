@@ -84,7 +84,7 @@ print("""
     <html lang="en">
         <head>
             <meta charset="utf-8" />
-            <title>Reservation System &#124; register</title>
+            <title>Reservation System &#124; Cancel Booking</title>
             <link rel="stylesheet" href="styles.css">
         </head>
         <body>
@@ -93,7 +93,9 @@ print("""
             </header>
             <main>
                 <h1> Cancelling Booking </h1>
-                <p><a href="login.py"> Log in</a></p>
+                <p><a href="book.py"> Make Booking</a></p>
+                <p><a href="viewBookings.py"> View Own Bookings</a></p>
+                <p><a href="logout.py"> Log out</a></p>
 
                 %s
             </main>
