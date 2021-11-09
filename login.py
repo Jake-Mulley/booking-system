@@ -44,7 +44,7 @@ if len(form_data) != 0:
                    <ul>
                        <li><a href="viewBookings.py">View Own Bookings</a></li> 
                        <li><a href="viewAllBookings.py">View All Bookings</a></li>
-                       <li><a href="test.py">Make Booking For Self</a></li>
+                       <li><a href="book.py">Make Booking For Self</a></li>
                        <li><a href="logout.py">Log out</a></li>
                    </ul>"""
                 print(cookie)
