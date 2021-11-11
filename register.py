@@ -35,11 +35,13 @@ if len(form_data) != 0:
             else:
                 sha256_password = sha256(password1.encode()).hexdigest()
                 account_type = "customer"
+                # insert new users into the database
                 cursor.execute("""INSERT INTO users (username, password, accountType, fname, lname) 
                                   VALUES (%s, %s, %s, %s, %s)""", (username, sha256_password, account_type, fname, lname))
                 connection.commit()
                 cursor.close()
                 connection.close()
+                # create session
                 cookie = SimpleCookie()
                 sid = sha256(repr(time()).encode()).hexdigest()
                 cookie['sid'] = sid
@@ -51,7 +53,7 @@ if len(form_data) != 0:
                    <p>Successfully registered.</p>
                    <p>Thanks for registering.</p>
                    <ul>
-                       <li><a href="book.py">Book</a></li> 
+                       <li><a href="viewBookings.py">View own bookings</a></li> 
                        <li><a href="logout.py">Logout</a></li>
                    </ul>"""
                 print(cookie)
@@ -73,6 +75,7 @@ print("""
             <header>
                 <h1>Reservation System</h1>
             </header>
+            
             <main>
                 <h1>Register:</h1>
                 <form action="register.py" method="post">
@@ -94,7 +97,6 @@ print("""
             </main>
             <footer>
                 <small>&copy; Group 3 3500 2021</small>
-                <a href="#header">Back To The Top</a>
             </footer>
         </body>
     </html>""" % (username, result))
