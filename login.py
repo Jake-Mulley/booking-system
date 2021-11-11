@@ -1,7 +1,5 @@
 #!/usr/local/bin/python3
 
-#!/usr/local/bin/python3
-
 from cgitb import enable
 
 enable()
@@ -13,6 +11,7 @@ from time import time
 from shelve import open
 from http.cookies import SimpleCookie
 import pymysql as db
+
 
 form_data = FieldStorage()
 username = ''
@@ -33,6 +32,7 @@ if len(form_data) != 0:
             if cursor.rowcount == 0:
                 result = '<p>You entered an incorrect user name or password</p>'
             else:
+                # create session
                 cookie = SimpleCookie()
                 sid = sha256(repr(time()).encode()).hexdigest()
                 cookie['sid'] = sid
@@ -44,11 +44,13 @@ if len(form_data) != 0:
                    <p>You have logged in.</p>
                    <p>Welcome back to the reservation system.</p>
                    <ul>
-                       <li><a href="viewBookings.py">View Own Bookings</a></li> 
-                       <li><a href="viewAllBookings.py">View All Bookings</a></li>
-                       <li><a href="book.py">Make Booking For Self</a></li>
-                       <li><a href="modifyAccount.py">Modify Account</a></li>
-                       <li><a href="logout.py">Log out</a></li>
+
+                        <a href="viewBookings.py">View own Bookings</a>
+                        <a href="book.py">Make Booking For Self</a>
+                        <a href="viewAllBookings.py">View All Bookings</a>
+                        <a href="bookOther.py">Make Booking For Someone else</a>
+                        <a href="modifyAccount.py">Modify Account</a>
+                        <a href="logout.py">Log Out</a>
                    </ul>"""
                 print(cookie)
             cursor.close()
@@ -86,7 +88,6 @@ print("""
             </main>
             <footer>
                 <small>&copy; Group 3 CS3500 2021</small>
-                <a href="#header">Back To The Top</a>
             </footer>
         </body>
     </html>""" % (username, result))
