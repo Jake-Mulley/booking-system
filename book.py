@@ -18,10 +18,6 @@ print()
 result = """
     <main>
         
-       <ul>
-           <li><a href="register.py">Register</a></li>
-           <li><a href="login.py">Login</a></li>
-       </ul>
    </main>"""
 
 try:
@@ -59,7 +55,7 @@ try:
 
                                 cursor.execute("""INSERT INTO bookings (Person, BookingTime, TableID)
                                                   VALUES (%s, %s, %s)""", (username, time, table))
-                                result = 'booking successful'#'<p>Booking at table %s at %s was successful</p>' % (table, time)
+                                result = '<p>Booking at table %s at %s was successful</p>' % (table, time)
                             connection.commit()
                             cursor.close()
                             connection.close()
@@ -76,15 +72,23 @@ print("""
     <html lang="en">
         <head>
             <meta charset="utf-8" />
-            <title>Reservation System &#124; register</title>
+            <title>Reservation System &#124; Make Booking</title>
             <link rel="stylesheet" href="styles.css">
         </head>
         <body>
             <header>
                 <h1>Reservation System</h1>
             </header>
+            <nav>
+                <a href="viewBookings.py">View own Bookings</a>
+                <a href="book.py">Make Booking For Self</a>
+                <a href="viewAllBookings.py">View All Bookings</a>
+                <a href="bookOther.py">Make Booking For Someone else</a>
+                <a href="modifyAccount.py">Modify Account</a>
+                <a href="logout.py">Log Out</a>
+            </nav>
             <main>
-                <h1>Register:</h1>
+                <h1>Make Booking:</h1>
                 <form action="book.py" method="post">
                     <label for="table">Table Number: </label>
                     <input type="text" name="table" id="table" value="%s" />
@@ -94,14 +98,11 @@ print("""
                     <input type="submit" value="Book" />
                 </form>
                 <p>Use the above boxes to enter a valid table number and the time with which you wish to book</p>
-                <p><a href="viewBookings.py">View Bookings </a></p>
-                <p><a href="logout.py"> Log Out</a></p>
 
                 %s
             </main>
             <footer>
                 <small>&copy; Group 3 3500 2021</small>
-                <a href="#header">Back To The Top</a>
             </footer>
         </body>
     </html>""" % (table, result))
