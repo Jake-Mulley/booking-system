@@ -35,7 +35,7 @@ try:
             username = session_store['username']
 
             if session_store.get('authenticated'):
-                connection = db.connect('localhost', '', '', '')
+                connection = db.connect('localhost', 'jm72', 'phoht', 'cs6503_cs1106_jm72')
                 cursor = connection.cursor(db.cursors.DictCursor)
 
                 form_data = FieldStorage()
@@ -103,10 +103,10 @@ print("""
                 </header>
                 
                 <nav>
-                    <a href="viewBookings.py">View All Bookings</a>
+                    <a href="viewBookings.py">View own Bookings</a>
                     <a href="book.py">Make Booking For Self</a>
                     <a href="viewAllBookings.py">View All Bookings</a>
-                    <a href="">Make Booking For Someone else</a>
+                    <a href="bookOther.py">Make Booking For Someone else</a>
                     <a href="modifyAccount.py">Modify Account</a>
                     <a href="logout.py">Log Out</a>
                 </nav>
