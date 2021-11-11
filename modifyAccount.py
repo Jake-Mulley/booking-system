@@ -35,7 +35,7 @@ try:
             username = session_store['username']
 
             if session_store.get('authenticated'):
-                connection = db.connect('localhost', 'jm72', 'phoht', 'cs6503_cs1106_jm72')
+                connection = db.connect('localhost', '', '', '')
                 cursor = connection.cursor(db.cursors.DictCursor)
 
                 form_data = FieldStorage()
