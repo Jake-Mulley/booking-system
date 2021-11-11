@@ -73,7 +73,6 @@ try:
                                 connection.close()
 
                         except (db.Error, IOError):
-                            # nts, improve output here
                             result = '<p>Sorry! We are experiencing problems at the moment. Please call back later. </p>'
 
 except IOError:
@@ -91,17 +90,21 @@ print("""
             <header>
                 <h1>Reservation System</h1>
             </header>
+            <nav>
+                <a href="viewBookings.py">View own Bookings</a>
+                <a href="book.py">Make Booking For Self</a>
+                <a href="viewAllBookings.py">View All Bookings</a>
+                <a href="bookOther.py">Make Booking For Someone else</a>
+                <a href="modifyAccount.py">Modify Account</a>
+                <a href="logout.py">Log Out</a>
+            </nav>
+            
             <main>
                 <h1> Cancelling Booking </h1>
-                <p><a href="book.py"> Make Booking</a></p>
-                <p><a href="viewBookings.py"> View Own Bookings</a></p>
-                <p><a href="logout.py"> Log out</a></p>
-
                 %s
             </main>
             <footer>
                 <small>&copy; Group 3 3500 2021</small>
-                <a href="#header">Back To The Top</a>
             </footer>
         </body>
     </html>""" % (result))
