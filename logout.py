@@ -46,7 +46,6 @@ print("""
             </main>
             <footer>
                 <small>&copy; Group 3 CS3500 2021 </small>
-                <a href="#header">Back To The Top</a>
             </footer>
         </body>
     </html>""" % (result))
