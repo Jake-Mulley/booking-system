@@ -38,9 +38,7 @@ try:
                 connection = db.connect('localhost', '', '', '')
                 cursor = connection.cursor(db.cursors.DictCursor)
 
-
                 cursor.execute('SELECT * FROM bookings WHERE Person = %s', (username))
-
 
                 table = '<table><tr><th>Booking ID</th><th>Table</th><th>Time</th></tr>'
                 counter = 0
@@ -51,7 +49,6 @@ try:
                 cursor.close()
                 connection.close()
                 result = """
-
                     <main>
                             <h1>Cancel Booking</h1>
                             <form action="cancelBooking.py" method="post">
@@ -64,6 +61,7 @@ try:
                     </main>
                     """ % (table)
             session_store.close()
+
 except IOError:
     result = '<p>Sorry! We are experiencing problems at the moment. Please call back later.</p>'
 
@@ -80,18 +78,17 @@ print("""
                 <h1>Reservation System</h1>
             </header>
             <nav>
-                <a href=""></a>
-                <a href=""> </a>
-                <a href="viewAllBookings.py">View All Bookings</a>
-                <a href="modifyAccount.py">Modify Account</a>
+                <a href="viewBookings.py">View own Bookings</a>
                 <a href="book.py">Make Booking For Self</a>
-                <a href="logout.py">Log Out </a>
+                <a href="viewAllBookings.py">View All Bookings</a>
+                <a href="bookOther.py">Make Booking For Someone else</a>
+                <a href="modifyAccount.py">Modify Account</a>
+                <a href="logout.py">Log Out</a>
             </nav>
             %s
             <aside></aside>
             <footer>
                 <small>&copy; Group 3 CS3500 2021</small>
-                <a href="#header">Back To The Top</a>
 	        </footer>
         </body>
     </html>""" % (result))
