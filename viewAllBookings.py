@@ -15,21 +15,22 @@ print('Content-Type: text/html')
 print()
 
 result = """
-    <main>
-        <h1>Please log in or register to view your bookings.</h1>
+
+        <h1>Please log in or register to view all bookings.</h1>
        <p>You do not have permission to access this page.</p>
        <ul>
            <li><a href="register.py">Register</a></li>
            <li><a href="login.py">Login</a></li>
-           <a href="logout.py">Log Out </a>
-           
        </ul>
-   </main>"""
+   """
+table = ''
 
 try:
     cookie = SimpleCookie()
+    # get the http cookie
     http_cookie_header = environ.get('HTTP_COOKIE')
     if http_cookie_header:
+        # cookie exists, load http cookie to cookie
         cookie.load(http_cookie_header)
         if 'sid' in cookie:
             sid = cookie['sid'].value
@@ -45,36 +46,36 @@ try:
                 cursor.execute('SELECT * FROM users WHERE username = %s', (username))
 
                 # use fetchone() not fetchall, no need for a loop here
-                for row in cursor.fetchall():
-                    if row['accountType'] == 'waitstaff' or row['accountType'] == 'manager' or row['accountType'] == 'admin':
-                        cursor.execute('SELECT * FROM bookings')
-                        table = '<table><tr><th>Booking ID</th><th>Table</th><th>Time</th></tr>'
-                        counter = 0
-                        for row in cursor.fetchall():
-                            table += '<tr><th>%s</th><td>%s</td><td>%s</td></tr>' % (
-                                row['BookingID'], row['TableID'], row['BookingTime'])
-                        table += '</table>'
-                        cursor.close()
-                        connection.close()
-                        result = """
+                userDetails = cursor.fetchone()
+                if userDetails['accountType'] == 'waitstaff' or userDetails['accountType'] == 'manager':
 
-                            <main>
+                    # the user is a staff member, can view all bookings
+                    cursor.execute('SELECT * FROM bookings')
+                    table = '<table><tr><th>Booking ID</th><th>Table</th><th>Time</th></tr>'
+                    counter = 0
+                    for row in cursor.fetchall():
+                        table += '<tr><th>%s</th><td>%s</td><td>%s</td></tr>' % (
+                            row['BookingID'], row['TableID'], row['BookingTime'])
+                    table += '</table>'
+                    cursor.close()
+                    connection.close()
+                    if userDetails['accountType'] == 'manager':
+                        # if it is a manager they have the option to cancel any booking
+                        result = """
                                     <h1>Cancel Booking</h1>
                                     <form action="cancelBooking.py" method="post">
                                         <label for="bookingID">Booking ID to cancel: </label>
                                         <input type="text" name="bookingID" id="bookingID"/>
                                         <input type="submit" value="Cancel Booking" />
-                                        
                                     </form>
-                                    
-                                    
-                                    <p></p>
-                                    %s
-                            </main>
-                            """ % (table)
-            else:
-                result = '<p>You do not have access to viewing all bookings</p>'
+                                """
+                    else:
+                        result = ''
+
+                else:
+                    result = '<p>You do not have access to viewing all bookings</p>'
             session_store.close()
+
 except IOError:
     result = '<p>Sorry! We are experiencing problems at the moment. Please call back later.</p>'
 
@@ -91,18 +92,21 @@ print("""
                 <h1>Reservation System</h1>
             </header>
             <nav>
-                <a href=""></a>
-                <a href=""> </a>
-                <a href="viewAllBookings.py">View All Bookings</a>
-                <a href="modifyAccount.py">Modify Account</a>
+                <a href="viewBookings.py">View own Bookings</a>
                 <a href="book.py">Make Booking For Self</a>
-                <a href="logout.py">Log Out </a>
+                <a href="viewAllBookings.py">View All Bookings</a>
+                <a href="bookOther.py">Make Booking For Someone else</a>
+                <a href="modifyAccount.py">Modify Account</a>
+                <a href="logout.py">Log Out</a>
             </nav>
-            %s
+            <main>
+                %s
+                %s
+            </main>
+            
             <aside></aside>
             <footer>
                 <small>&copy; Group 3 CS3500 2021</small>
-                <a href="#header">Back To The Top</a>
 	        </footer>
         </body>
-    </html>""" % (result))
+    </html>""" % (result, table))
