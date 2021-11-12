@@ -21,6 +21,7 @@ try:
             session_store = open('sess_' + sid, writeback=True)
             session_store['authenticated'] = False
             session_store.close()
+            # add success message to output
             result = """
                 <p>You are now logged out. Thanks for using our reservation system.</p>
                 <p>You can log in again: <a href="login.py">Login.</a></p>"""
