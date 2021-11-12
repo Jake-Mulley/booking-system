@@ -1,13 +1,12 @@
 #!/usr/local/bin/python3
+
 from cgitb import enable
 
 enable()
 
 from cgi import FieldStorage
 from html import escape
-from hashlib import sha256
 from os import environ
-from time import time
 from shelve import open
 from http.cookies import SimpleCookie
 import pymysql as db
@@ -43,6 +42,7 @@ try:
                 row = cursor.fetchone()
                 # is the user a staff member,
                 if row['accountType'] == 'manager' or row['accountType'] == 'waitstaff':
+                    # user is a manager or a waitstaff, can book for other users
                     result = """    <form action="bookOther.py" method="post">
                                         <label for="usernameBook">Username: </label>
                                         <input type="text" name="usernameBook" id="usernameBook" value="" />
@@ -69,7 +69,9 @@ try:
                             try:
                                 cursor.execute("""SELECT * FROM bookings 
                                                   WHERE TableID = %s AND BookingTime = %s""", (table, time))
+
                                 if cursor.rowcount > 0:
+                                    # booking already exists
                                     result += '<p>That table has already taken for that time</p>'
                                 else:
                                     # create booking
