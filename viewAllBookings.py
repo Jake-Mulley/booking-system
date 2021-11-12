@@ -4,8 +4,6 @@ from cgitb import enable
 
 enable()
 
-from cgi import FieldStorage
-from html import escape
 from os import environ
 from shelve import open
 from http.cookies import SimpleCookie
@@ -38,6 +36,7 @@ try:
             username = session_store['username']
 
             if session_store.get('authenticated'):
+                # connect to the database
                 connection = db.connect('localhost', '', '', '')
                 cursor = connection.cursor(db.cursors.DictCursor)
 
@@ -51,7 +50,7 @@ try:
 
                     # the user is a staff member, can view all bookings
                     cursor.execute('SELECT * FROM bookings')
-                    table = '<table><tr><th>Booking ID</th><th>Table</th><th>Time</th></tr>'
+                    table = '<h1>View Bookings</h1><table><tr><th>Booking ID</th><th>Table</th><th>Time</th></tr>'
                     counter = 0
                     for row in cursor.fetchall():
                         table += '<tr><th>%s</th><td>%s</td><td>%s</td></tr>' % (
@@ -60,9 +59,9 @@ try:
                     cursor.close()
                     connection.close()
                     if userDetails['accountType'] == 'manager':
-                        # if it is a manager they have the option to cancel any booking
+                        # if it is a manager they have the option to cancel any booking, so output the form to do so
                         result = """
-                                    <h1>Cancel Booking</h1>
+                                    <h1>Make a cancellation</h1>
                                     <form action="cancelBooking.py" method="post">
                                         <label for="bookingID">Booking ID to cancel: </label>
                                         <input type="text" name="bookingID" id="bookingID"/>
@@ -109,4 +108,4 @@ print("""
                 <small>&copy; Group 3 CS3500 2021</small>
 	        </footer>
         </body>
-    </html>""" % (result, table))
+    </html>""" % (table, result))
