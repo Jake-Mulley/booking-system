@@ -5,9 +5,7 @@ enable()
 
 from cgi import FieldStorage
 from html import escape
-from hashlib import sha256
 from os import environ
-from time import time
 from shelve import open
 from http.cookies import SimpleCookie
 import pymysql as db
@@ -44,15 +42,17 @@ try:
 
                     else:
                         try:
+                            # connect to the database
                             connection = db.connect('localhost', '', '', '')
                             cursor = connection.cursor(db.cursors.DictCursor)
+                            # query database for a booking that has that table at that time
                             cursor.execute("""SELECT * FROM bookings 
                                               WHERE TableID = %s AND BookingTime = %s""", (table, time))
                             if cursor.rowcount > 0:
+                                # booking exists, cannot duplicate
                                 result = '<p>That table has already taken for that time</p>'
                             else:
-                                # create booking
-
+                                # create booking, insert into database
                                 cursor.execute("""INSERT INTO bookings (Person, BookingTime, TableID)
                                                   VALUES (%s, %s, %s)""", (username, time, table))
                                 result = '<p>Booking at table %s at %s was successful</p>' % (table, time)
@@ -61,7 +61,6 @@ try:
                             connection.close()
 
                         except (db.Error, IOError):
-                            # nts, improve output here
                             result = '<p>Sorry! We are experiencing problems at the moment. Please call back later. </p>'
 
 except IOError:
@@ -92,6 +91,7 @@ print("""
                 <form action="book.py" method="post">
                     <label for="table">Table Number: </label>
                     <input type="text" name="table" id="table" value="%s" />
+                    
                     <label for="time">Time (format: YYYY-MM-DD hh:mm:ss): </label>
                     <input type="text" name="time" id="time" />
 
