@@ -35,6 +35,7 @@ try:
             username = session_store['username']
 
             if session_store.get('authenticated'):
+                # connect to the database
                 connection = db.connect('localhost', '', '', '')
                 cursor = connection.cursor(db.cursors.DictCursor)
 
@@ -73,7 +74,7 @@ try:
                                             <option value="manager">manager</option>
                                             <option value="admin">admin</option>
                                           </select>
-                                        <input type="submit" value="Modify Account Booking" />
+                                        <input type="submit" value="Modify Account Type" />
 
                                     </form>
                                     %s
