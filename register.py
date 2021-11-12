@@ -26,19 +26,25 @@ if len(form_data) != 0:
         result = '<p>Passwords must be equal</p>'
     else:
         try:
+            # connect to the database
             connection = db.connect('localhost', '', '', '')
             cursor = connection.cursor(db.cursors.DictCursor)
+            # search database for that username
             cursor.execute("""SELECT * FROM users 
                               WHERE username = %s""", (username))
             if cursor.rowcount > 0:
+                # username exists in database, it is taken
                 result = '<p>That user name has already taken</p>'
             else:
+                # hash password
                 sha256_password = sha256(password1.encode()).hexdigest()
+                # default assign
                 account_type = "customer"
                 # insert new users into the database
                 cursor.execute("""INSERT INTO users (username, password, accountType, fname, lname) 
                                   VALUES (%s, %s, %s, %s, %s)""", (username, sha256_password, account_type, fname, lname))
                 connection.commit()
+                # close connection
                 cursor.close()
                 connection.close()
                 # create session
@@ -49,12 +55,17 @@ if len(form_data) != 0:
                 session_store['authenticated'] = True
                 session_store['username'] = username
                 session_store.close()
+                # output a list to navigate to other web pages
                 result = """
                    <p>Successfully registered.</p>
                    <p>Thanks for registering.</p>
                    <ul>
-                       <li><a href="viewBookings.py">View own bookings</a></li> 
-                       <li><a href="logout.py">Logout</a></li>
+                        <a href="viewBookings.py">View own Bookings</a>
+                        <a href="book.py">Make Booking For Self</a>
+                        <a href="viewAllBookings.py">View All Bookings</a>
+                        <a href="bookOther.py">Make Booking For Someone else</a>
+                        <a href="modifyAccount.py">Modify Account</a>
+                        <a href="logout.py">Log Out</a>
                    </ul>"""
                 print(cookie)
         except (db.Error, IOError):
