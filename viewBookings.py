@@ -4,8 +4,6 @@ from cgitb import enable
 
 enable()
 
-from cgi import FieldStorage
-from html import escape
 from os import environ
 from shelve import open
 from http.cookies import SimpleCookie
@@ -15,14 +13,14 @@ print('Content-Type: text/html')
 print()
 
 result = """
-    <main>
-        <h1>Please log in or register to view your bookings.</h1>
+       <h1>Please log in or register to view your bookings.</h1>
        <p>You do not have permission to access this page.</p>
        <ul>
            <li><a href="register.py">Register</a></li>
            <li><a href="login.py">Login</a></li>
        </ul>
-   </main>"""
+       """
+table = ''
 
 try:
     cookie = SimpleCookie()
@@ -35,31 +33,35 @@ try:
             username = session_store['username']
 
             if session_store.get('authenticated'):
+                # connect to the database
                 connection = db.connect('localhost', '', '', '')
                 cursor = connection.cursor(db.cursors.DictCursor)
 
                 cursor.execute('SELECT * FROM bookings WHERE Person = %s', (username))
 
-                table = '<table><tr><th>Booking ID</th><th>Table</th><th>Time</th></tr>'
+                table = '<h1>View Bookings</h1><table><tr><th>Booking ID</th><th>Table</th><th>Time</th></tr>'
                 counter = 0
                 for row in cursor.fetchall():
+                    # add each row to the table
                     table += '<tr><th>%s</th><td>%s</td><td>%s</td></tr>' % (
                     row['BookingID'], row['TableID'], row['BookingTime'])
                 table += '</table>'
+                # close connection to db
                 cursor.close()
                 connection.close()
+                # output the form to cancel a booking
                 result = """
-                    <main>
-                            <h1>Cancel Booking</h1>
-                            <form action="cancelBooking.py" method="post">
-                                <label for="bookingID">Booking ID to cancel: </label>
-                                <input type="text" name="bookingID" id="bookingID"/>
-                                <input type="submit" value="Cancel Booking" />
-                            </form>
-                            <p></p>
-                            %s
-                    </main>
-                    """ % (table)
+              
+                        <h1>Make a cancellation</h1>
+                        <form action="cancelBooking.py" method="post">
+                            <label for="bookingID">Booking ID to cancel: </label>
+                            <input type="text" name="bookingID" id="bookingID"/>
+                            <input type="submit" value="Cancel Booking" />
+                        </form>
+                        <p></p>
+                        
+    
+                    """
             session_store.close()
 
 except IOError:
@@ -85,10 +87,13 @@ print("""
                 <a href="modifyAccount.py">Modify Account</a>
                 <a href="logout.py">Log Out</a>
             </nav>
+            <main>
             %s
+            %s
+            </main>
             <aside></aside>
             <footer>
                 <small>&copy; Group 3 CS3500 2021</small>
 	        </footer>
         </body>
-    </html>""" % (result))
+    </html>""" % (table, result))
