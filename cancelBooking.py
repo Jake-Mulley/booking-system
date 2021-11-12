@@ -1,13 +1,12 @@
 #!/usr/local/bin/python3
+
 from cgitb import enable
 
 enable()
 
 from cgi import FieldStorage
 from html import escape
-from hashlib import sha256
 from os import environ
-from time import time
 from shelve import open
 from http.cookies import SimpleCookie
 import pymysql as db
@@ -47,6 +46,7 @@ try:
 
                     else:
                         try:
+                            # connect to the database
                             connection = db.connect('localhost', '', '', '')
                             cursor = connection.cursor(db.cursors.DictCursor)
                             cursor.execute('SELECT * FROM users WHERE username = %s', username)
