@@ -24,15 +24,18 @@ if len(form_data) != 0:
     else:
         sha256_password = sha256(password.encode()).hexdigest()
         try:
+            # connect to the database
             connection = db.connect('localhost', '', '', '')
             cursor = connection.cursor(db.cursors.DictCursor)
+            # Query database with the inputted username and password
             cursor.execute("""SELECT * FROM users 
                               WHERE username = %s
                               AND password = %s""", (username, sha256_password))
             if cursor.rowcount == 0:
+                # no result from database, incorrect details
                 result = '<p>You entered an incorrect user name or password</p>'
             else:
-                # create session
+                # correct details, create session
                 cookie = SimpleCookie()
                 sid = sha256(repr(time()).encode()).hexdigest()
                 cookie['sid'] = sid
@@ -40,6 +43,7 @@ if len(form_data) != 0:
                 session_store['authenticated'] = True
                 session_store['username'] = username
                 session_store.close()
+                # add list to navigate web application to output
                 result = """
                    <p>You have logged in.</p>
                    <p>Welcome back to the reservation system.</p>
