@@ -1,1 +1,33 @@
-body, main, aside, nav{}
+* {
+list-style-type: none;
+color: tomato;
+text-align: center;
+padding: 2%
+
+}
+
+header {
+background-repeat: no-repeat;
+background-position: center;
+background-size: cover;
+background-image: url("https://www.worldipreview.com/media/image/shutterstock_1123137131_oleg_voronische.jpg");
+border-style: solid;
+background-color: black;
+font-size: 40px;
+}
+
+main {border-style: solid;
+background-color: black;
+font-size: 30px;}
+
+footer {border-style: solid;
+background-color: black;
+font-size: 15px;}
+
+a {
+border-style: solid;
+padding: 1%}
+
+nav {
+border-style: solid;
+background-color: #3c3c3c;}
